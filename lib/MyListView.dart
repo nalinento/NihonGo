@@ -322,11 +322,12 @@ class _HihonReorderableListViewState
 
             itemBuilder: (context, index) {
               return Card(
+
                 key: Key('$index'),
                 margin: EdgeInsets.all(6.0),
                 child: Container(
-                  width: 40, // Set the desired width for each item
-                  height: 20, // Set the desired height for each item
+                  width: 40,
+                  height: 20,
                   alignment: Alignment.center,
                   child: Text(
                     items[index],
