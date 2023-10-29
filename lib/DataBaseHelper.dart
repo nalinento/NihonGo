@@ -15,6 +15,13 @@ class DatabaseHelper {
     _database = await _initDatabase();
     return _database!;
   }
+  Future<void> deleteAllData() async {
+    if (_database == null) {
+
+    }
+
+    await _database?.delete('User'); // Replace 'my_table' with your table name
+  }
 
   Future<Database> _initDatabase() async {
     final databasePath = await getApplicationDocumentsDirectory();

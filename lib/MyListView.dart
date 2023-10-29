@@ -5,17 +5,8 @@ import 'package:nihon/DataBaseHelper.dart';
 import 'package:vibration/vibration.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:lottie/lottie.dart';
-import 'package:csv/csv.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-
-
-
-
 
 class MyListView extends StatefulWidget {
-
-
 
   @override
   State<MyListView> createState() => _MyListViewState();
@@ -30,8 +21,9 @@ class _MyListViewState extends State<MyListView> with SingleTickerProviderStateM
 
   @override
   void initState() {
+
     super.initState();
-    readCSV();
+
     // Create an AnimationController with a duration
     _controller = AnimationController(
       vsync: this,
@@ -48,52 +40,7 @@ class _MyListViewState extends State<MyListView> with SingleTickerProviderStateM
 
   }
   //-----------------------Load CSV File-----------------------
-  Future<List<List<dynamic>>?> readCSV() async {
-    try {
 
-      String csvData = await rootBundle.loadString('assets/Datas.csv');
-      final List<List<dynamic>> csvTable = CsvToListConverter().convert(csvData);
-      saveSpecificDataToSQLite(csvTable);
-      return csvTable;
-
-    } catch (e) {
-      print("Error reading CSV: $e");
-      return null;
-    }
-  }
-  String sinhalaCsvS="";
-  String japanCsvS="";
-  static List<String> sinhalaCsv=[];
-  static List<String> japanCsv=[];
-  Future<void> saveSpecificDataToSQLite(List<dynamic> data) async {
-
-    if (data != null && data.length >= 3) {
-
-      for(int a =0; a<data.length; a++){
-        sinhalaCsvS = data[a][1].toString();
-        japanCsvS = data[a][2].toString();
-
-        sinhalaCsv.add(sinhalaCsvS);
-        japanCsv.add(japanCsvS);
-      }
-      save(sinhalaCsv, japanCsv);
-    }
-  }
-
-
-  Future<void> save(List<String> sinhala,List<String> japan) async {
-    final databaseHelp =DatabaseHelper.instance;
-    String? list = await databaseHelp.findColumnValueById('User', 'japan', 1);
-    List<String> sin =sinhala;
-    List<String> jap = japan;
-
-    if(list==null) {
-      for (int a = 0; a < japanCsv.length; a++) {
-        await databaseHelp.insertData(sin[a], jap[a]);
-      }
-
-    };
-  }
   //-------------End CSV File------------------------
   void setAnime(bool anime){
     String str= anime? "assets/correct.json":"assets/wrong.json";
@@ -288,7 +235,7 @@ class _HihonReorderableListViewState
 
   void checkWord(int oldIndex, int newIndex) {
 
-    Random rm =Random();
+
 
     setState(() {
       if (oldIndex < newIndex) {
@@ -316,13 +263,20 @@ class _HihonReorderableListViewState
           height: 100,
           // Set the desired height for the horizontal ReorderableListView
           child: ReorderableListView.builder(
+
             scrollDirection: Axis.horizontal,
             itemCount: items.length,
             onReorder: checkWord,
 
             itemBuilder: (context, index) {
               return Card(
-
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0), // Set border radius for rounded corners
+                  side: BorderSide(
+                    color: Colors.blue, // Set the color of the border
+                    width: 2.0, // Set the width of the border
+                  ),
+                ),
                 key: Key('$index'),
                 margin: EdgeInsets.all(6.0),
                 child: Container(
